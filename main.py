@@ -14,8 +14,8 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
+    if message.content.startswith('!Hej'):
+        await message.channel.send('Siemka!')
 
     if message.content.startswith('!Cytuj'):
         await message.channel.send(zlotemysli.GoldenThoughts().selectQuote())
