@@ -9,7 +9,7 @@ class Application():
 
     def getMaxRow(self,case):
         self.conn.row_factory = lambda cursor, row: row[0]
-        sql = "SELECT value_numeric FROM _tb_ref_parametry where param = ?"
+        sql = "SELECT value_numeric FROM tb_ref_parameter where param = ?"
         self.case = (case,)
         c = self.conn.cursor()
         ids = c.execute(sql,self.case).fetchall()
@@ -29,10 +29,10 @@ class Application():
 if __name__ == "__main__":
 
     a = sqlite3.connect(config.db)
-    b ='_tb_ref_prowadzacy'
+    b ='tb_ref_teacher'
 
     x = Application()
-    print(x.getMaxRow('licz_cytaty'))
+    print(x.getMaxRow('count_quotes'))
 
     # dodaj
     # wywolaj
