@@ -17,7 +17,7 @@ async def on_message(message):
     if message.content.startswith('!Hej'):
         await message.channel.send('Siemka!')
 
-    if message.content.startswith('!Cytuj'):
+    if message.content.startswith('!C'):
         await message.channel.send(zlotemysli.GoldenThoughts().selectQuote())
 
 # client.run('your token here')
