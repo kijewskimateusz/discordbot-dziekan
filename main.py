@@ -17,9 +17,22 @@ async def on_message(message):
     if message.content.startswith('!Hej'):
         await message.channel.send('Siemka!')
 
-    if message.content.startswith('!Cytuj'):
+    if message.content.startswith('!C'):
         await message.channel.send(zlotemysli.GoldenThoughts().selectQuote())
 
-# client.run('your token here')
+@client.event
+async def on_reaction_add(reaction,user):
+    if reaction.emoji == '📖': 
+        if user.dm_channel == None: 
+            await user.create_dm()
+        await user.send(f'Kto jest autorem cytatu "{reaction.message.content}" ?')
+
+        def check(m):
+            return m.channel == user.dm_channel
+        response = await client.wait_for('message', check=check)
+        
+        await user.send('Zanotowane, dzięki {.author}!.'.format(response))
+        print(reaction.message.content)
+        print(response.content)
 
 client.run(config.botToken)
