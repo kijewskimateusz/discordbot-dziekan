@@ -9,19 +9,19 @@ client = discord.Client()
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
 
+# wywoływanie zapisanego cytatu
 @client.event
 async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('!Hej'):
-        await message.channel.send('Siemka!')
-
-    if message.content.startswith('!C'):
+    if message.content.startswith('!Cytat'):
         await message.channel.send(zlotemysli.GoldenThoughts().selectQuote())
 
+# dodawanie nowego cytatu
 @client.event
 async def on_reaction_add(reaction,user):
+    q = reaction.message.content
     if reaction.emoji == '📖': 
         if user.dm_channel == None: 
             await user.create_dm()
@@ -30,9 +30,11 @@ async def on_reaction_add(reaction,user):
         def check(m):
             return m.channel == user.dm_channel
         response = await client.wait_for('message', check=check)
-        
+        a = response.content
         await user.send('Zanotowane, dzięki {.author}!.'.format(response))
-        print(reaction.message.content)
-        print(response.content)
+        zlotemysli.GoldenThoughts().addQuote(a,q)
+
+# admin może usuwać cytaty 
+# dodać timeouty do odpowiedzi botowi na autora cytatu 
 
 client.run(config.botToken)
