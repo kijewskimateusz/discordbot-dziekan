@@ -1,5 +1,6 @@
 import config
 import discord
+import asyncio
 import zlotemysli
 
 client = discord.Client()
@@ -29,12 +30,19 @@ async def on_reaction_add(reaction,user):
 
         def check(m):
             return m.channel == user.dm_channel
-        response = await client.wait_for('message', check=check)
-        a = response.content
-        await user.send('Zanotowane, dzięki {.author}!.'.format(response))
-        zlotemysli.GoldenThoughts().addQuote(a,q)
+        try:
+            response = await client.wait_for('message', timeout = 15, check = check)
+        except asyncio.TimeoutError:
+            await user.send('Minął czas na odpowiedź, spróbuj ponownie ✌')
+        else:
+            if response.author == client.user:
+                await user.send('Wystąpił błąd 🐛. Spróbuj ponownie ✌')
+            else:
+                await user.send(f'Zanotowane, dzięki {response.author.display_name} 🙌!')
+                a = response.content
+                zlotemysli.GoldenThoughts().addQuote(a,q)
 
 # admin może usuwać cytaty 
-# dodać timeouty do odpowiedzi botowi na autora cytatu 
+# OK dodać timeouty do odpowiedzi botowi na autora cytatu
 
 client.run(config.botToken)
