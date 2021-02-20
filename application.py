@@ -8,33 +8,32 @@ class Application():
         self.c = self.conn.cursor()
         pass
 
+    def selectMultiRow(self,sql,expr):
+        self.expr = (expr,)
+        self.sql = sql
+        queryResult = self.c.execute(self.sql,self.expr).fetchall()
+        return queryResult
+
+    def returnFirstRow(self,sql,expr):
+        tuple = self.selectMultiRow(sql,expr)
+        for x in tuple:
+            return x[0]
+
+    def insertToTable(self,sql,*args):
+        self.args = args
+        self.sql = sql
+        try:
+            self.c.execute(self.sql,self.args)
+            self.conn.commit()
+        except sqlite3.IntegrityError:
+            pass
+            # print('blad - juz dodane')
+        else:
+            pass
+            # print('dodane')
+
     def closeConnection(self):
         self.conn.close()
-
-    def GetRowNo(self,table,column,value):
-        self.conn.row_factory = lambda cursor, row: row[0]
-        sql = f"SELECT ID FROM {table} where {column} = ?"
-        self.value = (value,)
-        c = self.conn.cursor()
-        ids = c.execute(sql,self.value).fetchall()
-        num = self.convertListToInt(ids)
-        return num
-
-    def getParamVal(self,case):
-        self.conn.row_factory = lambda cursor, row: row[0]
-        sql = "SELECT value_numeric FROM tb_ref_parameter where param = ?"
-        self.case = (case,)
-        c = self.conn.cursor()
-        ids = c.execute(sql,self.case).fetchall()
-        num = self.convertListToInt(ids)
-        return num
-    
-    def convertListToInt(self,list):
-        self.list = list
-        strings = [str(integer) for integer in self.list]
-        a_string = "".join(strings)
-        an_integer = int(a_string)
-        return an_integer
 
 if __name__ == "__main__":
 
@@ -43,4 +42,6 @@ if __name__ == "__main__":
 
     x = Application()
     y = 'Test5'
-    x.addQuote('Test5','abc')
+    # print(x.returnFirstRow("SELECT q.ID, q.quote, t.name FROM tb_quotes q INNER JOIN tb_ref_teacher t on q.teacher_id = t.id where q.ID = ?","4"))
+    # print(x.returnFirstRow('select * from tb_ref_teacher where name = ?','Test5'))
+    x.insertToTable("insert into tb_ref_teacher(name) values (?)","Test12")

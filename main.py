@@ -16,7 +16,7 @@ async def on_message(message):
         return
 
     if message.content.startswith('!Cytat'):
-        await message.channel.send(zlotemysli.GoldenThoughts().selectQuote())
+        await message.channel.send(zlotemysli.GoldenThoughts().printQuote())
 
 # dodawanie nowego cytatu
 @client.event
