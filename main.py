@@ -1,7 +1,8 @@
 import config
 import discord
 import asyncio
-import zlotemysli
+from zlotemysli import GoldenThoughts 
+from plan import ClassSchedule
 
 client = discord.Client()
 
@@ -17,7 +18,10 @@ async def on_message(message):
         return
 
     if message.content.startswith('!Cytat'):
-        await message.channel.send(zlotemysli.GoldenThoughts().printQuote())
+        await message.channel.send(GoldenThoughts().printQuote())
+
+    if message.content.startswith('!Plan'):
+        await message.channel.send(ClassSchedule().printClassesMessage())
 
 # dodawanie nowego cytatu
 @client.event
@@ -40,7 +44,7 @@ async def on_reaction_add(reaction,user):
             else:
                 await user.send(f'Zanotowane, dzięki {response.author.display_name} 🙌!')
                 a = response.content
-                zlotemysli.GoldenThoughts().addQuote(a,q)
+                GoldenThoughts().addQuote(a,q)
 
 # admin może usuwać cytaty 
 # OK dodać timeouty do odpowiedzi botowi na autora cytatu

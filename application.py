@@ -1,11 +1,14 @@
 import sqlite3
 import config
+from datetime import date, datetime
+
 
 class Application():
     
     def __init__(self):
         self.conn = sqlite3.connect(config.db)
         self.c = self.conn.cursor()
+        self.today = date.today()
         pass
 
     def selectMultiRow(self,sql,expr):
@@ -31,6 +34,10 @@ class Application():
         else:
             pass
             # print('dodane')
+
+    def convertToDate(self,arg):
+        #  self.arg = datetime.strptime(arg, '%Y-%m-%d').date()
+        return datetime.strptime(arg, '%Y-%m-%d').date()
 
     def closeConnection(self):
         self.conn.close()
