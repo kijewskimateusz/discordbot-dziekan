@@ -1,5 +1,5 @@
 --
--- Plik wygenerowany przez SQLiteStudio v3.2.1 dnia niedz. lut 21 21:49:24 2021
+-- Plik wygenerowany przez SQLiteStudio v3.2.1 dnia pon. lut 22 19:24:34 2021
 --
 -- Użyte kodowanie tekstu: System
 --
@@ -15,8 +15,7 @@ CREATE TABLE tb_classes (
     [end]         DATETIME NOT NULL,
     subject_id    INTEGER  REFERENCES tb_ref_subject (ID) 
                            NOT NULL,
-    teacher_id    INTEGER  REFERENCES tb_ref_teacher (ID) 
-                           NOT NULL,
+    teacher_id    INTEGER  REFERENCES tb_ref_teacher (ID),
     class_type_id INTEGER  REFERENCES tb_ref_class_type (ID) 
                            NOT NULL,
     spec_id       INTEGER  REFERENCES tb_ref_spec (ID) 
